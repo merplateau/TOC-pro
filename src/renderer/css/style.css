@@ -38,12 +38,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #FFFFFF;
 }
 
 .welcome-content {
     text-align: center;
-    color: white;
+    color: var(--text-color);
     animation: fadeIn 0.6s ease-out;
 }
 
@@ -52,18 +52,19 @@ body {
     font-weight: 700;
     margin-bottom: 12px;
     letter-spacing: -1px;
+    color: var(--primary-color);
 }
 
 .welcome-subtitle {
     font-size: 18px;
-    opacity: 0.9;
+    color: var(--secondary-text);
     margin-bottom: 40px;
 }
 
 .welcome-hint {
     margin-top: 20px;
     font-size: 14px;
-    opacity: 0.7;
+    color: var(--secondary-text);
 }
 
 /* ===== 主界面 ===== */
