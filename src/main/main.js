@@ -10,13 +10,16 @@ function createWindow() {
     height: 900,
     minWidth: 1000,
     minHeight: 600,
-    titleBarStyle: 'hiddenInset', // macOS 原生标题栏
+    titleBarStyle: 'hidden', // macOS 隐藏标题栏
+    titleBarOverlay: false,
+    trafficLightPosition: { x: 20, y: 20 },
     backgroundColor: '#FFFFFF',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
-      sandbox: false
+      sandbox: false,
+      webSecurity: false // 允许加载 CDN 资源
     }
   });
 

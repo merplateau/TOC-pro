@@ -82,6 +82,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 12px 24px;
+    padding-top: 52px; /* 留出红绿灯空间 */
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -95,6 +96,14 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
+}
+
+.toolbar-left {
+    flex: 1;
+    -webkit-app-region: drag;
+}
+
+.toolbar-right {
     -webkit-app-region: no-drag;
 }
 
@@ -102,7 +111,6 @@ body {
     font-size: 14px;
     font-weight: 600;
     color: var(--text-color);
-    -webkit-app-region: drag;
     cursor: default;
     user-select: none;
 }

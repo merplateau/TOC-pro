@@ -1,11 +1,19 @@
 // ===== PDF Reader Pro - 主应用逻辑 =====
 
-// 等待 PDF.js 加载完成
-const pdfjsLib = window.pdfjsLib || window['pdfjs-dist/build/pdf'];
+// 等待 PDF.js 加载
+let pdfjsLib = null;
+let pdfLibReady = false;
 
-// 设置 PDF.js worker
-if (pdfjsLib) {
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.js';
+// 检查并初始化 PDF.js
+function initPdfLib() {
+    if (typeof window.pdfjsLib !== 'undefined') {
+        pdfjsLib = window.pdfjsLib;
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.js';
+        pdfLibReady = true;
+        console.log('PDF.js 加载成功');
+        return true;
+    }
+    return false;
 }
 
 // ===== 全局状态 =====
@@ -92,6 +100,17 @@ const elements = {
 // ===== 初始化 =====
 function init() {
     console.log('初始化应用...');
+    
+    // 初始化 PDF.js
+    if (!initPdfLib()) {
+        console.warn('PDF.js 尚未加载，等待 1 秒后重试...');
+        setTimeout(() => {
+            if (!initPdfLib()) {
+                console.error('PDF.js 加载失败');
+            }
+        }, 1000);
+    }
+    
     loadConfig();
     setupEventListeners();
     setupDragAndDrop();
@@ -267,8 +286,11 @@ async function loadPdfFromData(arrayBuffer, fileName, filePath) {
     
     try {
         // 确保 PDF.js 已加载
-        if (typeof pdfjsLib === 'undefined') {
-            throw new Error('PDF.js 未加载');
+        if (!pdfLibReady || !pdfjsLib) {
+            // 尝试重新初始化
+            if (!initPdfLib()) {
+                throw new Error('PDF.js 未加载');
+            }
         }
         
         // 清理旧文档
