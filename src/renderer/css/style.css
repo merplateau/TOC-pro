@@ -102,6 +102,9 @@ body {
     font-size: 14px;
     font-weight: 600;
     color: var(--text-color);
+    -webkit-app-region: drag;
+    cursor: default;
+    user-select: none;
 }
 
 .toolbar-btn {

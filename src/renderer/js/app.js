@@ -1,20 +1,11 @@
 // ===== PDF Reader Pro - 主应用逻辑 =====
 
 // 等待 PDF.js 加载完成
-let pdfjsLib;
-if (typeof window.pdfjsLib !== 'undefined') {
-    pdfjsLib = window.pdfjsLib;
-} else {
-    // 动态加载 PDF.js
-    const script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.mjs';
-    script.type = 'module';
-    document.head.appendChild(script);
-}
+const pdfjsLib = window.pdfjsLib || window['pdfjs-dist/build/pdf'];
 
 // 设置 PDF.js worker
 if (pdfjsLib) {
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.mjs';
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.js';
 }
 
 // ===== 全局状态 =====
