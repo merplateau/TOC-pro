@@ -1,0 +1,43 @@
+{
+  "name": "pdf-reader-pro",
+  "version": "1.0.0",
+  "description": "极简 PDF 阅读器 - macOS 版",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --mac",
+    "build:dir": "electron-builder --mac --dir"
+  },
+  "keywords": ["pdf", "reader", "electron", "macos"],
+  "author": "",
+  "license": "MIT",
+  "packageManager": "pnpm@10.28.2",
+  "devDependencies": {
+    "electron": "^40.1.0",
+    "electron-builder": "^26.7.0",
+    "electron-store": "^11.0.2",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^5.4.530"
+  },
+  "build": {
+    "appId": "com.pdfreader.pro",
+    "productName": "PDF Reader Pro",
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        }
+      ]
+    },
+    "files": [
+      "src/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "dist"
+    }
+  }
+}

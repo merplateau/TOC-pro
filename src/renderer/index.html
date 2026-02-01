@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Reader Pro</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 欢迎页面 -->
+    <div id="welcome-screen" class="welcome-screen">
+        <div class="welcome-content">
+            <h1>PDF Reader Pro</h1>
+            <p class="welcome-subtitle">极简、优雅、高效</p>
+            <button id="open-file-btn" class="primary-button">打开 PDF 文件</button>
+            <div class="welcome-hint">或将 PDF 文件拖拽到此处</div>
+        </div>
+    </div>
+
+    <!-- 主界面 -->
+    <div id="main-screen" class="main-screen hidden">
+        <!-- 顶部工具栏 -->
+        <div class="toolbar">
+            <div class="toolbar-left">
+                <span id="file-name" class="file-name">未命名文档</span>
+            </div>
+            <div class="toolbar-right">
+                <button id="toc-btn" class="toolbar-btn" title="目录 (Cmd+T)">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="8" y1="6" x2="21" y2="6"></line>
+                        <line x1="8" y1="12" x2="21" y2="12"></line>
+                        <line x1="8" y1="18" x2="21" y2="18"></line>
+                        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                    </svg>
+                </button>
+                <button id="settings-btn" class="toolbar-btn" title="设置 (Cmd+,)">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M12 1v6m0 6v6m0-18a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2 2 2 0 0 1-2-2V3a2 2 0 0 1 2-2zm0 12a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2z"></path>
+                        <path d="M20.188 4.934l-4.95 2.85m-6.476 3.732l-4.95 2.85m11.426-6.582a2 2 0 0 1 2.732-.732l1.732 1a2 2 0 0 1 .732 2.732 2 2 0 0 1-2.732.732l-1.732-1a2 2 0 0 1-.732-2.732zm-6.476 7.464a2 2 0 0 1 2.732-.732l1.732 1a2 2 0 0 1 .732 2.732 2 2 0 0 1-2.732.732l-1.732-1a2 2 0 0 1-.732-2.732z"></path>
+                        <path d="M3.812 4.934l4.95 2.85m6.476 3.732l4.95 2.85M9.238 7.784a2 2 0 0 1-.732-2.732l1-1.732a2 2 0 0 1 2.732-.732 2 2 0 0 1 .732 2.732l-1 1.732a2 2 0 0 1-2.732.732zm6.476 7.464a2 2 0 0 1-.732-2.732l1-1.732a2 2 0 0 1 2.732-.732 2 2 0 0 1 .732 2.732l-1 1.732a2 2 0 0 1-2.732.732z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- PDF 预览区域 -->
+        <div id="pdf-viewer" class="pdf-viewer">
+            <div id="pdf-container" class="pdf-container"></div>
+        </div>
+
+        <!-- 页码指示器 -->
+        <div class="page-indicator">
+            <button id="prev-page-btn" class="page-nav-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+            <span id="page-info" class="page-info">1 / 1</span>
+            <button id="next-page-btn" class="page-nav-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- 目录抽屉 -->
+    <div id="toc-drawer" class="drawer hidden">
+        <div class="drawer-overlay"></div>
+        <div class="drawer-content">
+            <div class="drawer-header">
+                <h2>目录</h2>
+                <button id="close-toc-btn" class="close-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div id="toc-tree" class="toc-tree">
+                <div class="toc-empty">暂无目录</div>
+            </div>
+            <div class="drawer-actions">
+                <button id="recognize-toc-btn" class="secondary-button">识别目录</button>
+                <button id="edit-toc-btn" class="secondary-button">编辑目录</button>
+                <button id="export-pdf-btn" class="primary-button">导出 PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 设置页面 -->
+    <div id="settings-screen" class="settings-screen hidden">
+        <div class="settings-header">
+            <button id="back-from-settings-btn" class="back-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+            <h2>设置</h2>
+        </div>
+        <div class="settings-content">
+            <div class="settings-section">
+                <h3>API 配置</h3>
+                <div class="settings-group">
+                    <label for="api-key-input">API Key</label>
+                    <input type="password" id="api-key-input" placeholder="请输入 API Key">
+                </div>
+                <div class="settings-group">
+                    <label>模型</label>
+                    <div class="static-value">doubao-seed-1-6-flash-250828</div>
+                </div>
+                <div class="settings-group">
+                    <label>API 地址</label>
+                    <div class="static-value">https://ark.cn-beijing.volces.com/api/v3/responses</div>
+                </div>
+                <button id="test-api-btn" class="secondary-button">测试连接</button>
+                <div id="api-status" class="status-message"></div>
+            </div>
+
+            <div class="settings-section">
+                <h3>页码偏移</h3>
+                <div class="settings-grid">
+                    <div class="settings-group">
+                        <label for="printed-page-input">印刷页码</label>
+                        <input type="number" id="printed-page-input" min="1" value="1">
+                    </div>
+                    <div class="settings-group">
+                        <label for="pdf-page-input">对应 PDF 页码</label>
+                        <input type="number" id="pdf-page-input" min="1" value="1">
+                    </div>
+                </div>
+                <div class="offset-display">
+                    <span class="offset-label">偏移量：</span>
+                    <span id="offset-value" class="offset-value">0</span>
+                </div>
+                <div class="settings-hint">偏移量 = PDF 页码 - 印刷页码，会在写入目录时自动换算</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 目录编辑模态框 -->
+    <div id="toc-edit-modal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>编辑目录</h2>
+                <button id="close-edit-modal-btn" class="close-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="toc-edit-actions">
+                    <button id="add-toc-item-btn" class="secondary-button">添加条目</button>
+                    <button id="import-json-btn" class="secondary-button">导入 JSON</button>
+                    <button id="export-json-btn" class="secondary-button">导出 JSON</button>
+                </div>
+                <div id="toc-edit-table" class="toc-edit-table">
+                    <div class="toc-table-header">
+                        <span>标题</span>
+                        <span>页码</span>
+                        <span>层级</span>
+                        <span>操作</span>
+                    </div>
+                    <div id="toc-table-body" class="toc-table-body"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancel-edit-btn" class="secondary-button">取消</button>
+                <button id="save-toc-btn" class="primary-button">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加载提示 -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="loading-spinner"></div>
+        <div id="loading-text" class="loading-text">加载中...</div>
+    </div>
+
+    <script src="js/app.js" type="module"></script>
+</body>
+</html>
